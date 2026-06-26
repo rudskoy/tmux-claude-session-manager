@@ -31,8 +31,8 @@ done < <(tmux list-sessions -F '#{session_name}' 2>/dev/null | grep "^${prefix}"
 # Show waiting/idle first (need attention), then working, then unknown if any.
 # tmux #[fg=...] color codes; #[default] restores the surrounding style.
 out=''
-[ "$waiting" -gt 0 ] && out="$out#[fg=yellow]●${waiting} "
-[ "$idle" -gt 0 ] && out="$out#[fg=green]●${idle} "
-[ "$working" -gt 0 ] && out="$out#[fg=red]●${working} "
-[ "$unknown" -gt 0 ] && out="$out#[fg=colour244]●${unknown} "
+[ "$waiting" -gt 0 ] && out="$out#[fg=colour226,bold]● ${waiting} "
+[ "$idle" -gt 0 ] && out="$out#[fg=colour46,bold]● ${idle} "
+[ "$working" -gt 0 ] && out="$out#[fg=colour196,bold]● ${working} "
+[ "$unknown" -gt 0 ] && out="$out#[fg=colour250,bold]● ${unknown} "
 printf '%s#[default]' "${out% }"

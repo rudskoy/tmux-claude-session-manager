@@ -69,8 +69,13 @@ Inside the picker:
 | Key                       | Action                                                                    |
 | ------------------------- | ------------------------------------------------------------------------- |
 | `enter`                   | Jump to the session (switches to its origin window, resumes in the popup) |
+| `1`–`4`                   | Jump to the 1st–4th listed session (positional — `1` is the top row)      |
 | `ctrl-x`                  | Kill the highlighted session                                              |
-| `↑` / `↓`, type to filter | fzf navigation                                                            |
+| `↑` / `↓`, type to filter | fzf navigation (`5`–`0` still type into the filter)                       |
+
+> The row numbers are **positional**: they reflect the current order, so after you
+> filter the list, `1` always picks the new top row (the printed digits don't
+> renumber as you type).
 
 Sessions needing your attention (`waiting`, `idle`) sort to the top.
 
@@ -145,6 +150,26 @@ The state machine:
 > Claude Code reloads `hooks` dynamically — no restart needed. Sessions that are
 > already running start reporting status on their next event once the hooks are
 > added.
+
+## Native notifications (macOS, optional)
+
+Once the status hooks are wired (above), `state.sh` also fires a native macOS
+notification when a session changes to `waiting` (needs input) or `idle` (turn
+finished) — once per transition, so you hear about a session that needs you even
+when its popup is closed. It prefers
+[`terminal-notifier`](https://github.com/julienXX/terminal-notifier) (clicking the
+banner focuses iTerm) and falls back to `osascript` (built in).
+
+Clicking the banner raises your terminal and resumes that session in a popup over
+the window it was launched from (the same jump as the picker). Set the terminal
+app to raise with `@claude_notify_app` (defaults to `Ghostty`).
+
+On by default. Disable it with:
+
+```tmux
+set -g @claude_notify off          # turn notifications off
+set -g @claude_notify_app 'iTerm'  # terminal app to raise on click (default: Ghostty)
+```
 
 ## Status bar summary (optional)
 

@@ -30,7 +30,11 @@ emit_rows() {
     # rank asc (attention-needed floats up), then age asc so the session that
     # finished just now sits at the top of its group. -k4,4n reads the leading
     # number of the age field ("5m" -> 5; "-" -> 0).
-  done | sort -t$'\t' -k1,1n -k4,4n
+  done | sort -t$'\t' -k1,1n -k4,4n |
+    # Append a 1-based position as field 6 (after sorting, so it matches display
+    # order). Shown by fzf via --with-nth; lets keys 1-4 jump to a row. Trailing
+    # field keeps the {2}/cut -f2 (session) parsing intact.
+    awk -F'\t' 'BEGIN { OFS = "\t" } { print $0, NR }'
 }
 
 [ "${1:-}" = '--list' ] && {
@@ -45,9 +49,10 @@ fi
 
 self="${BASH_SOURCE[0]}"
 export FZF_DEFAULT_OPTS=''
-sel=$(emit_rows | fzf --ansi --delimiter='\t' --with-nth=3,4,5 \
-  --reverse --cycle --header='Claude sessions · enter: jump · ctrl-x: kill' \
+sel=$(emit_rows | fzf --ansi --delimiter='\t' --with-nth=6,3,4,5 \
+  --reverse --cycle --header='Claude sessions · enter/1-4: jump · ctrl-x: kill' \
   --preview="tmux capture-pane -ept {2}" --preview-window='right,62%,wrap' \
+  --bind='1:pos(1)+accept,2:pos(2)+accept,3:pos(3)+accept,4:pos(4)+accept' \
   --bind="ctrl-x:execute-silent(tmux kill-session -t {2})+reload($self --list)")
 
 [ -z "$sel" ] && exit 0
