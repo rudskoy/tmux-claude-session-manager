@@ -27,8 +27,14 @@ if [ "$notify" != 'off' ] && [ "$new" != "$prev" ]; then
   case "$new" in
   waiting | idle)
     path=$(tmux display-message -p -t "$session" '#{pane_current_path}' 2>/dev/null)
-    title="Claude · $new"
-    msg="${path/#$HOME/~}"
+    folder="${path##*/}" # last path component, e.g. tmux-claude-session-manager
+    [ -z "$folder" ] && folder="$session"
+    title="Claude · $folder"
+    case "$new" in
+    idle) msg='Done' ;;
+    waiting) msg='Waiting' ;;
+    *) msg="$new" ;;
+    esac
     if command -v terminal-notifier >/dev/null 2>&1; then
       # Click the banner -> raise the terminal and jump to this session.
       terminal-notifier -title "$title" -message "$msg" \
