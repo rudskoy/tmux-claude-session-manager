@@ -146,6 +146,24 @@ The state machine:
 > already running start reporting status on their next event once the hooks are
 > added.
 
+## Status bar summary (optional)
+
+Show a live tally of running Claude sessions — `waiting` / `idle` / `working` —
+in your tmux status bar. `scripts/status.sh` counts prefixed sessions by state
+and prints colored dots (yellow waiting, green idle, red working); it prints
+nothing when no Claude sessions exist.
+
+Add it to `status-right` (redrawn every `status-interval` seconds):
+
+```tmux
+set -ag status-right '#(~/.tmux/plugins/tmux-claude-session-manager/scripts/status.sh)'
+```
+
+Using [oh-my-tmux](https://github.com/gpakosz/.tmux)? Set it inside
+`tmux_conf_theme_status_right` in `~/.tmux.conf.local` instead, e.g. insert
+`#(~/.tmux/plugins/tmux-claude-session-manager/scripts/status.sh)` as its own
+` , `-separated segment. The counts require the status hooks above to be wired.
+
 ## Options
 
 Set any of these before the plugin loads (defaults shown):
