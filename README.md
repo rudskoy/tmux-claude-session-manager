@@ -62,6 +62,7 @@ run-shell ~/clone/path/claude_session_manager.tmux
 | Key            | Action                                                                          |
 | -------------- | ------------------------------------------------------------------------------- |
 | `prefix` + `y` | Launch (or re-attach to) a Claude session for the current directory, in a popup |
+| `prefix` + `o` | Same, but split the popup — Claude on the left (2/3), a shell on the right (1/3) |
 | `prefix` + `u` | Open the session picker                                                         |
 
 Inside the picker:
@@ -195,6 +196,8 @@ Set any of these before the plugin loads (defaults shown):
 
 ```tmux
 set -g @claude_launch_key     'y'        # prefix key: launch/open for current dir
+set -g @claude_split_key      'o'        # prefix key: launch with a split shell pane
+set -g @claude_split_percent  '33'       # right-pane width (%) in split mode
 set -g @claude_list_key       'u'        # prefix key: open the picker
 set -g @claude_command        'claude'   # command run in new sessions
 set -g @claude_session_prefix 'claude-'  # tmux session name prefix
