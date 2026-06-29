@@ -1,5 +1,18 @@
 # tmux-claude-session-manager
 
+> **Fork notice.** This is a fork of
+> [craftzdog/tmux-claude-session-manager](https://github.com/craftzdog/tmux-claude-session-manager)
+> with extra features. Enhancements added in this fork:
+>
+> - 🔢 **Number-key selection** in the picker — press `1`–`4` to jump to the
+>   1st–4th listed session.
+> - 📊 **Status-bar summary** (`scripts/status.sh`) — live `waiting`/`idle`/
+>   `working` tallies for your tmux status line.
+> - 🔔 **Native macOS notifications** on `waiting`/`idle` transitions; clicking a
+>   banner raises your terminal and jumps to that session.
+> - 🪟 **Split-view launch** (`prefix` + `o`) — Claude on the left (2/3), a shell
+>   on the right (1/3).
+
 [![screenshot](./docs/screenshot.jpg)](https://youtu.be/NnTV6r4l5D0)
 
 Run many [Claude Code](https://claude.com/claude-code) sessions across your
